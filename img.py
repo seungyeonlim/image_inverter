@@ -10,12 +10,17 @@ def main():
     st.title("Image Inverter")
 
     # Image upload section
-    uploaded_file = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+    uploaded_file = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"],accept_multiple_files=False)
     if uploaded_file is not None:
         # Open and display the original image
         image = Image.open(uploaded_file)
         st.image(image, caption='Original Image', use_column_width=True)
-
+        
+        print(image.mode)
+        
+        if image.mode == "RGBA" or image.mode == "RGB":
+            image = image.convert("RGB")
+        
         # Invert the image colors
         inverted_image = invert_image_color(image)
 
@@ -34,6 +39,7 @@ def main():
             file_name="inverted.png",
             mime="image/png"
         )
+
 
 if __name__ == "__main__":
     main()
